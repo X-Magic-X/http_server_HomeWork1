@@ -22,7 +22,6 @@ public class HttpServer {
                 Socket socket = serverSocket.accept();
                 Thread thread = new Thread(new Threads(socket, dispatcher));
                 thread.start();
-
             }
         } catch (IOException e) {
             e.printStackTrace();
