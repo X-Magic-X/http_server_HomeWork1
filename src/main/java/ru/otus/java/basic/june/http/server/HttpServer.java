@@ -69,7 +69,7 @@ public class HttpServer {
                 }
                 String rawRequest = requestBuffer.toString(StandardCharsets.UTF_8);
                 HttpRequest request = new HttpRequest(rawRequest);
-                request.info(true);
+                request.info();
                 dispatcher.execute(request, outputStream);
             } catch (IOException e) {
                 e.printStackTrace();
