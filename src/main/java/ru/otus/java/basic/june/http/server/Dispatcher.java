@@ -29,7 +29,7 @@ public class Dispatcher {
     }
 
     public void execute(HttpRequest request, OutputStream output) throws IOException {
-        if (Files.exists(Paths.get("static/", request.getUri().substring(1)))) {
+        if (Files.exists(Paths.get("static/", request.getUri().substring(1))) && !request.getUri().equals("/")) {
             defaultStaticResourcesRequestProcessor.execute(request, output);
             return;
         }
