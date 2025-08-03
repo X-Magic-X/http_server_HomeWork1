@@ -5,10 +5,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HttpServer {
     private final int port;
     private final Dispatcher dispatcher;
+    private final int THREADSCOUNT = 5;
 
     public HttpServer(int port) {
         this.port = port;
@@ -18,10 +22,10 @@ public class HttpServer {
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Сервер запущен на порту " + port + ". Ожидаем подключения");
+            ExecutorService executor = Executors.newFixedThreadPool(THREADSCOUNT);
             while (true) {
                 Socket socket = serverSocket.accept();
-                Thread thread = new Thread(new Threads(socket, dispatcher));
-                thread.start();
+                executor.submit(new Threads(socket, dispatcher));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,6 +56,14 @@ public class HttpServer {
                 dispatcher.execute(request, outputStream);
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                if(!socket.isClosed()){
+                    try{
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
