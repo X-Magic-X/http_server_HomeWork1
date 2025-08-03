@@ -57,8 +57,8 @@ public class HttpServer {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if(!socket.isClosed()){
-                    try{
+                if (!socket.isClosed()) {
+                    try {
                         socket.close();
                     } catch (IOException e) {
                         e.printStackTrace();
