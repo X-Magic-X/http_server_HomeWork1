@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -66,7 +67,7 @@ public class HttpServer {
                         break;
                     }
                 }
-                String rawRequest = new String(buffer, 0, bytesRead);
+                String rawRequest = requestBuffer.toString(StandardCharsets.UTF_8);
                 HttpRequest request = new HttpRequest(rawRequest);
                 request.info(true);
                 dispatcher.execute(request, outputStream);
